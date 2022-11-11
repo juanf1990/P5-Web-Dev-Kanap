@@ -9,6 +9,8 @@ fetch("http://localhost:3000/api/products")
   .then((products) => {
     insertProducts(products);
   });
+
+
 // Get element on HTML where to insert the cards
 
 const cardHolder = document.getElementById("items");
@@ -26,7 +28,7 @@ function insertProducts(products) {
         <article>
           <img
             class="productImage"
-            src='${product.imageUrl}'
+            src="${product.imageUrl}"
             alt="${product.altTxt}"
           />
           <h3 class="productName">${product.name}</h3>
