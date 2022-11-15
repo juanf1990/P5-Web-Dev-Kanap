@@ -10,118 +10,77 @@ const productID = urlParams.get("id");
 
 console.log(productID);
 
-const productHolder = document.querySelector(".item");
-/*
- * Get API product for selected product
- */
-
-// fetch(`http://localhost:3000/api/products/${productID}`)
-//   .then((product) => {
-//     return product.json();
-//   })
-//   .then((product) => {
-//     insertProduct(product);
-//   });
-let h1 = document.querySelector("#title");
-let p = document.querySelector("#description");
-let img = document.querySelector(".item__img > img");
-let price = document.querySelector("#price");
-let colors = document.querySelector("#colors");
-let quantity = document.querySelector("")
-async function displayProducts() {
-  let url = `http://localhost:3000/api/products/${productID}`;
-  let response = await fetch(url);
-  const product = await response.json();
-  console.log(product);
-  // title
-
-  h1.textContent = product.name;
-  // description
-
-  p.textContent = product.description;
-  // image
-
-  img.src = product.imageUrl;
-  // price
-
-  price.textContent = product.price;
-  // colors
-
-  let option = document.createElement("option");
-  product.colors.forEach((color) => {
-    option.textContent = color;
-    colors.appendChild(option);
-  });
-}
-
-let submitButton = document.querySelector("#addToCart");
-submitButton.addEventListener("click", addToCart);
-
-let test = [];
-
-function addToCart() {
-  localStorage.setItem("ID", productID);
-  localStorage.setItem("PRODUCT", h1.textContent);
-  localStorage.setItem("PRICE", price.textContent);
-  localStorage.setItem("QUANTITY", )
-  test.push(productID);
-  test.push(h1.textContent);
-  console.log(test);
-}
-
-displayProducts();
-
 /*
  * Find element to insert product details
  */
 
+const productHolder = document.querySelector(".item");
+const h1 = document.querySelector("#title");
+const p = document.querySelector("#description");
+const img = document.querySelector(".item__img");
+const price = document.querySelector("#price");
+const colors = document.querySelector("#colors");
+const quantity = document.getElementById("quantity");
+
 /*
- * Create function to add product elements into the holder
+ * Get API product for selected product
  */
 
-// function insertProduct(product) {
-//   const productElement = document.createElement("article");
+async function displayProducts() {
+  const url = `http://localhost:3000/api/products/${productID}`;
+  const response = await fetch(url);
+  const product = await response.json();
+  console.log(product);
 
-// //   productElement.innerHTML = `
-// //           <div class="item__img">
-// //             <img src="${product.imageUrl}" alt="${product.altTxt}">
-// //           </div>
-// //           <div class="item__content">
+  // title
 
-// //             <div class="item__content__titlePrice">
-// //               <h1 id="title">${product.name}</h1>
-// //               <p>Prix : <span id="price">${product.price}</span>€</p>
-// //             </div>
+  h1.innerText = product.name;
 
-// //             <div class="item__content__description">
-// //               <p class="item__content__description__title">Description:</p>
-// //               <p id="description">${product.description}</p>
-// //             </div>
+  // description
 
-// //             <div class="item__content__settings">
-// //               <div class="item__content__settings__color">
-// //                 <label for="color-select">Chose your color:</label>
-// //                 <select name="color-select" id="colors">
-// //                     <option value="">--Please, select a color --</option>
-// //                     <option>${c}</option>
-// //                 </select>
+  p.innerText = product.description;
 
-// //               </div>
-// //               <div class="item__content__settings__quantity">
-// //                 <label for="itemQuantity">Number of articles (1-100):</label>
-// //                 <input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity">
-// //               </div>
-// //             </div>
+  // image
 
-// //             <div class="item__content__addButton">
-// //               <button id="addToCart">Add to cart</button>
-// //             </div>
-// //           </div>
-// //         `;
-// //         productHolder.appendChild(productElement);
-// // }
+  img.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
 
-// TODO Create option tags using for loop from product.colors array and append them one by one to the select tag
+  // price
+
+  price.innerText = product.price;
+
+  // colors
+
+  let option = document.createElement("option");
+  product.colors.forEach((color) => {
+    colors.innerHTML += `<option value="${color}">${color}</option>`;
+  });
+
+}
+
+/*
+ * Event Listener on Submit button to save data on Local Storage
+ */
+
+let submitButton = document.querySelector("#addToCart");
+submitButton.addEventListener("click", addToCart);
+
+function addToCart() {
+  const cartArray = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const cartItem = {
+    id: productID,
+    color: colors.value,
+    quantity: parseInt(quantity.value),
+  };
+
+  // TODO Check first if the product array has a product with the same color, then increase quantity
+
+  cartArray.push(cartItem);
+  localStorage.setItem("cart", JSON.stringify(cartArray));
+  console.log(cartArray);
+}
+
+displayProducts();
 
 // JSON stringify (convert object to string) and JSON parse (convert from string to object);
 
@@ -137,3 +96,12 @@ displayProducts();
 
 // console.log(sampleCart);
 // console.log(JSON.stringify(sampleCart));
+
+/* <option value="">--Please, select a color --</option>
+<!--                       <option value="vert">green</option>
+  <option value="blanc">white</option> --> */
+
+//   <option value="">--Please, select a color --</option>
+//   <!--                       <option value="vert">green</option>
+//     <option value="blanc">white</option> -->
+// <option>White</option>
