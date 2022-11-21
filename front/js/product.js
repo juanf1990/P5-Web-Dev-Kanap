@@ -26,7 +26,7 @@ const quantity = document.getElementById("quantity");
  * Get API product for selected product
  */
 
-async function displayProducts() {
+async function displayCartProducts() {
   const url = `http://localhost:3000/api/products/${productID}`;
   const response = await fetch(url);
   const product = await response.json();
@@ -54,7 +54,6 @@ async function displayProducts() {
   product.colors.forEach((color) => {
     colors.innerHTML += `<option value="${color}">${color}</option>`;
   });
-
 }
 
 /*
@@ -72,54 +71,27 @@ function addToCart() {
     color: colors.value,
     quantity: parseInt(quantity.value),
   };
-  if (cartArray.length === 0 || !cartArray.find((item) => item.id === cartItem.id && item.color === cartItem.color)) {
+  if (
+    cartArray.length === 0 ||
+    !cartArray.find(
+      (item) => item.id === cartItem.id && item.color === cartItem.color
+    )
+  ) {
     cartArray.push(cartItem);
-    localStorage.setItem("cart", JSON.stringify(cartArray));
-  } else if (cartArray.length > 0 && cartArray.some((item) => item.id === cartItem.id && item.color === cartItem.color)) {
+  } else if (
+    cartArray.length > 0 &&
+    cartArray.some(
+      (item) => item.id === cartItem.id && item.color === cartItem.color
+    )
+  ) {
     cartArray.forEach((item) => {
       if (item.id === cartItem.id && item.color === cartItem.color) {
         item.quantity += cartItem.quantity;
-      } else {
-        cartArray.push(cartItem);
       }
     });
-    localStorage.setItem("cart", JSON.stringify(cartArray));
   } else {
     cartArray.push(cartItem);
-    localStorage.setItem("cart", JSON.stringify(cartArray));
   }
+  localStorage.setItem("cart", JSON.stringify(cartArray));
 }
-displayProducts();
-
-
-
-  // TODO Check first if the product array has a product with the same color, then increase quantity
-
-  // cartArray.push(cartItem);
-  // localStorage.setItem("cart", JSON.stringify(cartArray));
-  // console.log(cartArray);
-
-// JSON stringify (convert object to string) and JSON parse (convert from string to object);
-
-// localStorage.setItem("cartUpdate", JSON.stringify(cardArray(object)));
-
-// const cartItem = {
-//   id: "7321731273",
-//   color: "blue",
-//   quantity: 1,
-// };
-
-// const sampleCart = [cartItem];
-
-// console.log(sampleCart);
-// console.log(JSON.stringify(sampleCart));
-
-/* <option value="">--Please, select a color --</option>
-<!--                       <option value="vert">green</option>
-  <option value="blanc">white</option> -->
-
-//   <option value="">--Please, select a color --</option>
-//   <!--                       <option value="vert">green</option>
-//     <option value="blanc">white</option> -->
-// <option>White</option>
-*/
+displayCartProducts();
