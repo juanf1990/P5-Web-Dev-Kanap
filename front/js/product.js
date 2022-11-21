@@ -72,15 +72,32 @@ function addToCart() {
     color: colors.value,
     quantity: parseInt(quantity.value),
   };
+  if (cartArray.length === 0 || !cartArray.find((item) => item.id === cartItem.id && item.color === cartItem.color)) {
+    cartArray.push(cartItem);
+    localStorage.setItem("cart", JSON.stringify(cartArray));
+  } else if (cartArray.length > 0 && cartArray.some((item) => item.id === cartItem.id && item.color === cartItem.color)) {
+    cartArray.forEach((item) => {
+      if (item.id === cartItem.id && item.color === cartItem.color) {
+        item.quantity += cartItem.quantity;
+      } else {
+        cartArray.push(cartItem);
+      }
+    });
+    localStorage.setItem("cart", JSON.stringify(cartArray));
+  } else {
+    cartArray.push(cartItem);
+    localStorage.setItem("cart", JSON.stringify(cartArray));
+  }
+}
+displayProducts();
+
+
 
   // TODO Check first if the product array has a product with the same color, then increase quantity
 
-  cartArray.push(cartItem);
-  localStorage.setItem("cart", JSON.stringify(cartArray));
-  console.log(cartArray);
-}
-
-displayProducts();
+  // cartArray.push(cartItem);
+  // localStorage.setItem("cart", JSON.stringify(cartArray));
+  // console.log(cartArray);
 
 // JSON stringify (convert object to string) and JSON parse (convert from string to object);
 
@@ -99,9 +116,10 @@ displayProducts();
 
 /* <option value="">--Please, select a color --</option>
 <!--                       <option value="vert">green</option>
-  <option value="blanc">white</option> --> */
+  <option value="blanc">white</option> -->
 
 //   <option value="">--Please, select a color --</option>
 //   <!--                       <option value="vert">green</option>
 //     <option value="blanc">white</option> -->
 // <option>White</option>
+*/
