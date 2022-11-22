@@ -15,9 +15,24 @@ function getCart() {
 
 getCart();
 
-function deleteItem() {
+function deleteItem(event) {
+    event.target.closest('article').remove();
+    /* TODO: Find closest article tag element and remove it from the DOM */
+    /* TODO: Remove item from local storage */
     console.log("delete");
 }
+
+function changeQuantity(event) {
+    /* TODO: Find closest article tag element and get color and ID from the data tags (Element.dataset Element.dataset https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) */
+    /* TODO: Find the item in the cart from the localstorage and update the quantity */
+    console.log("change");
+}
+
+/* FIXME: duplicate products in cart */
+/* TODO: Update total quantity on the bottom of the page */
+/* TODO: Update total price on the bottom of the page */
+
+
 
 /* Display DATA on HTML */
 const productsContainer = document.getElementById("cart__items");
@@ -27,6 +42,7 @@ async function insertCartProducts() {
         const cart = getCart();
         if (cart) {
             cart.forEach((cartItem) => {
+                /* TODO: Add event listener to delete button and change quantity */
                 console.log(cartItem);
                 const product = products.find((product) => (product._id === cartItem.id) );
                 console.log(product);
@@ -37,9 +53,9 @@ async function insertCartProducts() {
                     </div>
                     <div class="cart__item__content">
                         <div class="cart__item__content__description">
-                            <h2>"${product.name}"</h3>
-                            <p>"${cartItem.color}"</p>
-                            <p>€"${product.price}"</p>
+                            <h2>${product.name}</h3>
+                            <p>${cartItem.color}</p>
+                            <p>€${product.price}</p>
                         </div>
                         <div class="cart__item__content__settings">
                             <div class="cart__item__content__settings_quantity">
@@ -60,8 +76,8 @@ async function insertCartProducts() {
 
 insertCartProducts();
 
-const removeItem = document.querySelector(".deleteItem");
-removeItem.addEventListener("click", "removeItem");
+// const removeItem = document.querySelector(".deleteItem");
+// removeItem.addEventListener("click", "removeItem");
 
 
 
@@ -91,5 +107,3 @@ removeItem.addEventListener("click", "removeItem");
     //                 </div>
     //             </div>
     //         `;
-
-insertCartProducts();
