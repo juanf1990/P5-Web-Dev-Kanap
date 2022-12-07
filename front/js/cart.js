@@ -14,13 +14,11 @@ function getCart() {
 }
 
 getCart();
-/* TODO: Find closest article tag element and remove it from the DOM */
-/* TODO: Remove item from local storage */
 
 /* TODO: Find closest article tag element and get color and ID from the data tags (Element.dataset Element.dataset https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) */
 /* TODO: Find the item in the cart from the localstorage and update the quantity */
 
-/* TODO: Update total quantity on the bottom of the page */
+/* FIXME: Update total quantity on the bottom of the page */
 
 /* TODO: Update total price on the bottom of the page */
 
@@ -33,33 +31,16 @@ const totalPrice = document.getElementById("totalPrice");
 function handleDelete(e) {
   const articleElement = e.target.closest("article");
   const id = articleElement.dataset.id;
+  const color = articleElement.dataset.color;
   articleElement.remove();
-  removeItem(id);
-// TODO Update total quantity from 
-
-  // }
+  removeItemFromLocalStorage(id, color);
 }
-
-// handle clicks on the quantity input
-productsContainer.onchange = function (e) {
-  if (e.target && e.target.classList.contains("itemQuantity")) {
-    const id = e.target.dataset.id; // get the id from the data-id attribute
-    const color = e.target.dataset.color; // get the color from the data-color attribute
-    if (e.target.value <= 0) {
-      removeItem(id);
-    }
-    if (e.target.value > 0) {
-      updateItem(id, color, e.target.value);
-    }
-  }
-};
 
 async function insertCartProducts() {
   await fetchProducts().then((products) => {
     const cart = getCart();
     if (cart) {
       cart.forEach((cartItem) => {
-        /* TODO: Add event listener to delete button and change quantity */
         console.log(cartItem);
         const product = products.find((product) => product._id === cartItem.id);
         console.log(product);
@@ -76,7 +57,7 @@ async function insertCartProducts() {
                         </div>
                         <div class="cart__item__content__settings">
                             <div class="cart__item__content__settings_quantity">
-                                <p>Quantity : ${cartItem.quantity}</p>
+                                <p>Quantity : </p>
                                 <input type="number" class="itemQuantity" name="itemQuantity "min="1" max="100" value="${cartItem.quantity}">
                             </div>
                             <div class="cart__item__content__settings_delete">
@@ -92,47 +73,49 @@ async function insertCartProducts() {
         articleElement
           .querySelector(".deleteItem")
           .addEventListener("click", handleDelete);
-          // TODO add event listener to quantity input
+
+        articleElement
+          .querySelector(".itemQuantity")
+          .addEventListener("change", handleQuantityChange);
 
         productsContainer.appendChild(articleElement);
         // TODO update total quantity and total price
-            const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
-            totalQuantity.innerText = currentTotalQuantity + cartItem.quantity;
+        const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
+        totalQuantity.innerText = currentTotalQuantity + cartItem.quantity;
       });
     }
   });
 }
 
-function removeItem(id) {
+function removeItemFromLocalStorage(id, color) {
   const cart = getCart();
-  for (let i = 0; i < cart.length; i++) {
-    if (cart[i].id === id) {
-      // TODO remove item from local storage
-        cart.splice(i, 1);
-    }
-  }
-    // TODO update total quantities on page using updated information from cards
-    // TODO update total price on page using updated information from fetch product function
-    // TODO update local storage using localStorage.setItem("cart", JSON.stringify(cart));
-    // 
+  const filteredCart = cart.filter(
+    (item) => !(item.id === id && item.color === color)
+  );
+  const stringifiedCart = JSON.stringify(filteredCart);
+  localStorage.setItem("cart", stringifiedCart);
+  // TODO update total quantities on page using updated information from cards
+  // TODO update total price on page using updated information from fetch product function
 }
 
-function updateItem(id, color, quantity) {
+function handleQuantityChange(e) {
+  const articleElement = e.target.closest("article");
+  const id = articleElement.dataset.id;
+  const color = articleElement.dataset.color;
+  const quantity = parseInt(e.target.value);
   const cart = getCart();
-  for (let i = 0; i < cart.length; i++) {
-    if (cart[i].id === id && cart[i].color === color) {
-      cart[i].quantity = quantity;
-    }
-    if (cart[i].quantity < 1) {
-      cart.splice(i, 1);
-    }
-    if (cart[i].quantity > 100) {
-      cart[i].quantity = 100;
-    }
-    if (cart[i].quantity < 1) {
-      cart[i].quantity = 1;
-    }
-  }
+  const result = cart.find((item) => item.id === id && item.color === color);
+  result.quantity = quantity;
+  const stringifiedCart = JSON.stringify(cart);
+  localStorage.setItem("cart", stringifiedCart);
+  // TODO create function UpdateTotals to update total quantities and total price on page using updated information from cards
+  // TODO update total quantities on page using updated information from cards
+  // TODO update total price on page using updated information from fetch product function
 }
 
 insertCartProducts();
+
+// TODO add event listener for form inputs
+// TODO add event listener to submit button
+// TODO fetch API post request once the data is validated
+// TODO redirect to confirmation page
