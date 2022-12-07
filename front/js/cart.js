@@ -15,9 +15,6 @@ function getCart() {
 
 getCart();
 
-/* TODO: Find closest article tag element and get color and ID from the data tags (Element.dataset Element.dataset https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) */
-/* TODO: Find the item in the cart from the localstorage and update the quantity */
-
 /* FIXME: Update total quantity on the bottom of the page */
 
 /* TODO: Update total price on the bottom of the page */
@@ -115,7 +112,7 @@ function handleQuantityChange(e) {
 
 insertCartProducts();
 
-// TODO add event listener for form inputs
-// TODO add event listener to submit button
+// TODO add event listeners to form inputs
+// TODO add event listeners to submit button
 // TODO fetch API post request once the data is validated
-// TODO redirect to confirmation page
+// TODO redirect click on submit button to confirmation page
