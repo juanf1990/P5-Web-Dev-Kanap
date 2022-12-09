@@ -128,26 +128,44 @@ function validate() {
   const city = document.getElementById("city").value;
   const email = document.getElementById("email").value;
   const nameRGEX = /^[a-zA-Z ]{2,30}$/;
-  const addressRGEX = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
+  const addressRGEX = /^[a-zA-Z0-9]*$/;
   const nameResult = nameRGEX.test(firstName);
   const lastNameResult = nameRGEX.test(lastName);
   const addressResult = addressRGEX.test(address);
   const cityResult = addressRGEX.test(city);
   const emailResult = email.includes("@");
-  alert(
-    "first name:" +
-      nameResult +
-      ", last name:" +
-      lastNameResult +
-      ", address: " +
-      addressResult +
-      ", city: " +
-      cityResult +
-      ", email: " +
-      emailResult
-  );
+  const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+  const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+  const addressErrorMsg = document.getElementById("addressErrorMsg");
+  const cityErrorMsg = document.getElementById("cityErrorMsg");
+  const emailErrorMsg = document.getElementById("emailErrorMsg");
+  if (nameResult === false) {
+    firstNameErrorMsg.innerText = "Please enter a valid first name";
+    alert("Please enter a valid first name");
+    return false;
+  }
+  if (lastNameResult === false) {
+    lastNameErrorMsg.innerText = "Please enter a valid last name";
+    alert("Please enter a valid last name");
+    return false;
+  }
+  if (addressResult === false) {
+    addressErrorMsg.innerText = "Please enter a valid address";
+    alert("Please enter a valid address");
+    return false;
+  }
+  if (cityResult === false) {
+    cityErrorMsg.innerText = "Please enter a valid city";
+    alert("Please enter a valid city");
+    return false;
+  }
+  if (emailResult === false) {
+    emailErrorMsg.innerText = "Please enter a valid email";
+    alert("Please enter a valid email");
+    return false;
+  }
 
-  return false;
+  return true;
 }
 
 // TODO add event listeners to submit button
