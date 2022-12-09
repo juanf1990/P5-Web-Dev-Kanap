@@ -165,7 +165,35 @@ function validate() {
     return false;
   }
 
-  return true;
+  return postrequest() && true ? true : false;
+}
+
+function postrequest() {
+  const cart = getCart();
+  const contact = {
+    firstName: document.getElementById("firstName").value,
+    lastName: document.getElementById("lastName").value,
+    address: document.getElementById("address").value,
+    city: document.getElementById("city").value,
+    email: document.getElementById("email").value,
+  };
+  const products = cart.map((item) => item.id);
+  const data = { contact, products };
+  fetch("http://localhost:3000/api/order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      localStorage.setItem("orderId", data.orderId);
+      window.location.href = "confirmation.html";
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 // TODO add event listeners to submit button
