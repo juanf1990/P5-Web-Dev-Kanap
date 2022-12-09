@@ -105,14 +105,55 @@ function handleQuantityChange(e) {
   result.quantity = quantity;
   const stringifiedCart = JSON.stringify(cart);
   localStorage.setItem("cart", stringifiedCart);
+  const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrices = cart.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
   // TODO create function UpdateTotals to update total quantities and total price on page using updated information from cards
   // TODO update total quantities on page using updated information from cards
   // TODO update total price on page using updated information from fetch product function
 }
+// TODO update total quantities on page using updated information from cards
+// TODO update total price on page using updated information from fetch product function
 
 insertCartProducts();
 
 // TODO add event listeners to form inputs
+
+function validate() {
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+  const address = document.getElementById("address").value;
+  const city = document.getElementById("city").value;
+  const email = document.getElementById("email").value;
+  const nameRGEX = /^[a-zA-Z ]{2,30}$/;
+  const addressRGEX = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
+  const nameResult = nameRGEX.test(firstName);
+  const lastNameResult = nameRGEX.test(lastName);
+  const addressResult = addressRGEX.test(address);
+  const cityResult = addressRGEX.test(city);
+  const emailResult = email.includes("@");
+  alert(
+    "first name:" +
+      nameResult +
+      ", last name:" +
+      lastNameResult +
+      ", address: " +
+      addressResult +
+      ", city: " +
+      cityResult +
+      ", email: " +
+      emailResult
+  );
+
+  return false;
+}
+
 // TODO add event listeners to submit button
+const submitButton = document.getElementById("submitButton");
+if (submitButton) {
+  submitButton.addEventListener("click", validate, false);
+}
 // TODO fetch API post request once the data is validated
 // TODO redirect click on submit button to confirmation page
