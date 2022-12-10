@@ -17,13 +17,6 @@ function getCart() {
 const productsContainer = document.getElementById("cart__items");
 
 // Handle clicks on delete button
-function handleDelete(e) {
-  const articleElement = e.target.closest("article");
-  const id = articleElement.dataset.id;
-  const color = articleElement.dataset.color;
-  articleElement.remove();
-  removeItemFromLocalStorage(id, color);
-}
 
 async function insertCartProducts() {
   await fetchProducts().then((products) => {
@@ -63,9 +56,40 @@ async function insertCartProducts() {
           .querySelector(".deleteItem")
           .addEventListener("click", handleDelete);
 
+        function handleDelete(e) {
+          const articleElement = e.target.closest("article");
+          const id = articleElement.dataset.id;
+          const color = articleElement.dataset.color;
+          articleElement.remove();
+          removeItemFromLocalStorage(id, color);
+          const cart = getCart();
+          const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
+          totalQuantity.innerHTML = currentTotalQuantity - cartItem.quantity;
+        }
+
         articleElement
           .querySelector(".itemQuantity")
           .addEventListener("change", handleQuantityChange);
+
+        function handleQuantityChange(e) {
+          const articleElement = e.target.closest("article");
+          const id = articleElement.dataset.id;
+          const color = articleElement.dataset.color;
+          const quantity = parseInt(e.target.value);
+          const cart = getCart();
+          const result = cart.find(
+            (item) => item.id === id && item.color === color
+          );
+          result.quantity = quantity;
+          const stringifiedCart = JSON.stringify(cart);
+          localStorage.setItem("cart", stringifiedCart);
+          parsedCart = JSON.parse(localStorage.getItem("cart"));
+          const currentTotalQuantity = parsedCart.reduce(
+            (acc, item) => acc + item.quantity,
+            0
+          );
+          totalQuantity.innerText = currentTotalQuantity;
+        }
 
         productsContainer.appendChild(articleElement);
         // TODO update total quantity and total price
@@ -86,23 +110,10 @@ function removeItemFromLocalStorage(id, color) {
   // TODO update total quantities on page using updated information from cards
   // TODO update total price on page using updated information from fetch product function
 }
+// TODO create function UpdateTotals to update total quantities and total price on page using updated information from cards
+// TODO update total quantities on page using updated information from cards
+// TODO update total price on page using updated information from fetch product function
 
-function handleQuantityChange(e) {
-  const articleElement = e.target.closest("article");
-  const id = articleElement.dataset.id;
-  const color = articleElement.dataset.color;
-  const quantity = parseInt(e.target.value);
-  const cart = getCart();
-  const result = cart.find((item) => item.id === id && item.color === color);
-  result.quantity = quantity;
-  const stringifiedCart = JSON.stringify(cart);
-  localStorage.setItem("cart", stringifiedCart);
-  const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
-  totalQuantity.innerText = result.quantity;
-  // TODO create function UpdateTotals to update total quantities and total price on page using updated information from cards
-  // TODO update total quantities on page using updated information from cards
-  // TODO update total price on page using updated information from fetch product function
-}
 // TODO update total quantities on page using updated information from cards
 // TODO update total price on page using updated information from fetch product function
 
