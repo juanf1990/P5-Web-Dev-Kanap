@@ -13,14 +13,8 @@ function getCart() {
   return cart;
 }
 
-/* FIXME: Update total quantity on the bottom of the page */
-
-/* TODO: Update total price on the bottom of the page */
-
 /* Display DATA on HTML */
 const productsContainer = document.getElementById("cart__items");
-const totalQuantity = document.getElementById("totalQuantity");
-const totalPrice = document.getElementById("totalPrice");
 
 // Handle clicks on delete button
 function handleDelete(e) {
@@ -103,11 +97,8 @@ function handleQuantityChange(e) {
   result.quantity = quantity;
   const stringifiedCart = JSON.stringify(cart);
   localStorage.setItem("cart", stringifiedCart);
-  const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalPrices = cart.reduce(
-    (acc, item) => acc + item.quantity * item.price,
-    0
-  );
+  const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
+  totalQuantity.innerText = result.quantity;
   // TODO create function UpdateTotals to update total quantities and total price on page using updated information from cards
   // TODO update total quantities on page using updated information from cards
   // TODO update total price on page using updated information from fetch product function
@@ -127,11 +118,12 @@ function validate() {
   const email = document.getElementById("email").value;
   const nameRegEx = /^[a-zA-Z ]{2,30}$/;
   const addressRegEx = /^[a-zA-Z0-9]*$/;
+  const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const nameResult = nameRegEx.test(firstName);
   const lastNameResult = nameRegEx.test(lastName);
   const addressResult = addressRegEx.test(address);
   const cityResult = addressRegEx.test(city);
-  const emailResult = email.includes("@");
+  const emailResult = emailRegEx.test(email);
   const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
   const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
   const addressErrorMsg = document.getElementById("addressErrorMsg");
@@ -170,6 +162,16 @@ function postrequest() {
     city: document.getElementById("city").value,
     email: document.getElementById("email").value,
   };
+  const products = [];
+  const cart = getCart();
+  cart.forEach((item) => {
+    products.push(item.id);
+  });
+  const order = { contact, products };
+  console.log("post", order);
+
+  console.log("post", products);
+
   try {
     fetch(
       "http://localhost:3000/api/products/order",
@@ -178,14 +180,14 @@ function postrequest() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(contact),
+        body: JSON.stringify(order),
       },
-      console.log("post", contact)
+      console.log("post", order)
     )
       .then((response) => response.json())
       .then((data) => {
         localStorage.removeItem("cart");
-        window.location.href = "confirmation.html";
+        window.location.href = "confirmation.html" + "?id=" + data.orderId;
       })
       .catch((error) => {
         console.error("Error:", error);
