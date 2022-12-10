@@ -13,8 +13,6 @@ function getCart() {
   return cart;
 }
 
-getCart();
-
 /* FIXME: Update total quantity on the bottom of the page */
 
 /* TODO: Update total price on the bottom of the page */
@@ -127,12 +125,12 @@ function validate() {
   const address = document.getElementById("address").value;
   const city = document.getElementById("city").value;
   const email = document.getElementById("email").value;
-  const nameRGEX = /^[a-zA-Z ]{2,30}$/;
-  const addressRGEX = /^[a-zA-Z0-9]*$/;
-  const nameResult = nameRGEX.test(firstName);
-  const lastNameResult = nameRGEX.test(lastName);
-  const addressResult = addressRGEX.test(address);
-  const cityResult = addressRGEX.test(city);
+  const nameRegEx = /^[a-zA-Z ]{2,30}$/;
+  const addressRegEx = /^[a-zA-Z0-9]*$/;
+  const nameResult = nameRegEx.test(firstName);
+  const lastNameResult = nameRegEx.test(lastName);
+  const addressResult = addressRegEx.test(address);
+  const cityResult = addressRegEx.test(city);
   const emailResult = email.includes("@");
   const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
   const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
@@ -141,35 +139,30 @@ function validate() {
   const emailErrorMsg = document.getElementById("emailErrorMsg");
   if (nameResult === false) {
     firstNameErrorMsg.innerText = "Please enter a valid first name";
-    alert("Please enter a valid first name");
-    return false;
+    return;
   }
   if (lastNameResult === false) {
     lastNameErrorMsg.innerText = "Please enter a valid last name";
-    alert("Please enter a valid last name");
-    return false;
+    return;
   }
   if (addressResult === false) {
     addressErrorMsg.innerText = "Please enter a valid address";
-    alert("Please enter a valid address");
-    return false;
+    return;
   }
   if (cityResult === false) {
     cityErrorMsg.innerText = "Please enter a valid city";
-    alert("Please enter a valid city");
-    return false;
+    return;
   }
   if (emailResult === false) {
     emailErrorMsg.innerText = "Please enter a valid email";
-    alert("Please enter a valid email");
-    return false;
+    return;
   }
 
-  return postrequest() && true ? true : false;
+  postrequest();
+  console.log("validated");
 }
 
 function postrequest() {
-  const cart = getCart();
   const contact = {
     firstName: document.getElementById("firstName").value,
     lastName: document.getElementById("lastName").value,
@@ -177,29 +170,46 @@ function postrequest() {
     city: document.getElementById("city").value,
     email: document.getElementById("email").value,
   };
-  const products = cart.map((item) => item.id);
-  const data = { contact, products };
-  fetch("http://localhost:3000/api/order", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      localStorage.setItem("orderId", data.orderId);
-      window.location.href = "confirmation.html";
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  try {
+    fetch(
+      "http://localhost:3000/api/products/order",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contact),
+      },
+      console.log("post", contact)
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.removeItem("cart");
+        window.location.href = "confirmation.html";
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+
+  // const products = [];
+  // const cart = getCart();
+  // cart.forEach((item) => {
+  //   products.push(contact, item.id);
+  // });
+
+  // console.log("post", products);
 }
 
 // TODO add event listeners to submit button
-const submitButton = document.getElementById("submitButton");
-if (submitButton) {
-  submitButton.addEventListener("click", validate, false);
-}
-// TODO fetch API post request once the data is validated
-// TODO redirect click on submit button to confirmation page
+const submitButton = document.getElementById("order");
+submitButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  validate();
+});
+/**
+ * TODO fetch API post request once the data is validated
+ * TODO redirect click on submit button to confirmation page
+ */
