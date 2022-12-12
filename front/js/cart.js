@@ -1,11 +1,11 @@
-/* fetch DATA from API */
+// fetch DATA from API
 async function fetchProducts() {
   const response = await fetch("http://localhost:3000/api/products");
   const products = await response.json();
   return products;
 }
 
-/* Get DATA from Local Storage */
+// Get cart from localStorage
 
 function getCart() {
   const cart = JSON.parse(localStorage.getItem("cart"));
@@ -13,8 +13,10 @@ function getCart() {
   return cart;
 }
 
-/* Display DATA on HTML */
+// Display DATA on HTML
+
 const productsContainer = document.getElementById("cart__items");
+const totalPrice = document.getElementById("totalPrice");
 
 // Handle clicks on delete button
 
@@ -27,6 +29,7 @@ async function insertCartProducts() {
         const product = products.find((product) => product._id === cartItem.id);
         console.log(product);
         const articleElement = document.createElement("article");
+        // Generates a div for an article
         articleElement.innerHTML = `
                 <div class="cart__item__img">
                      <img src="${product.imageUrl}" alt="${product.altTxt}">
@@ -38,11 +41,11 @@ async function insertCartProducts() {
                             <p>€${product.price}</p>
                         </div>
                         <div class="cart__item__content__settings">
-                            <div class="cart__item__content__settings_quantity">
+                            <div class="cart__item__content__settings__quantity">
                                 <p>Quantity : </p>
                                 <input type="number" class="itemQuantity" name="itemQuantity "min="1" max="100" value="${cartItem.quantity}">
                             </div>
-                            <div class="cart__item__content__settings_delete">
+                            <div class="cart__item__content__settings__delete">
                                 <p class="deleteItem">Delete</p>
                             </div>
                         </div>
@@ -51,6 +54,20 @@ async function insertCartProducts() {
         articleElement.classList.add("cart__item");
         articleElement.dataset.id = product._id;
         articleElement.dataset.color = cartItem.color;
+
+        function updateTotals() {
+          const parsedCart = JSON.parse(localStorage.getItem("cart"));
+          const currentTotalQuantity = parsedCart.reduce(
+            (acc, item) => acc + item.quantity,
+            0
+          );
+          const currentTotalPrice = parsedCart.reduce(
+            (acc, item) => acc + item.quantity * product.price,
+            0
+          );
+          totalQuantity.innerText = currentTotalQuantity;
+          totalPrice.innerText = currentTotalPrice;
+        }
 
         articleElement
           .querySelector(".deleteItem")
@@ -62,9 +79,7 @@ async function insertCartProducts() {
           const color = articleElement.dataset.color;
           articleElement.remove();
           removeItemFromLocalStorage(id, color);
-          const cart = getCart();
-          const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
-          totalQuantity.innerHTML = currentTotalQuantity - cartItem.quantity;
+          updateTotals();
         }
 
         articleElement
@@ -83,23 +98,17 @@ async function insertCartProducts() {
           result.quantity = quantity;
           const stringifiedCart = JSON.stringify(cart);
           localStorage.setItem("cart", stringifiedCart);
-          parsedCart = JSON.parse(localStorage.getItem("cart"));
-          const currentTotalQuantity = parsedCart.reduce(
-            (acc, item) => acc + item.quantity,
-            0
-          );
-          totalQuantity.innerText = currentTotalQuantity;
+          updateTotals();
         }
 
         productsContainer.appendChild(articleElement);
-        // TODO update total quantity and total price
-        const currentTotalQuantity = parseInt(totalQuantity.innerText || 0);
-        totalQuantity.innerText = currentTotalQuantity + cartItem.quantity;
+        updateTotals();
       });
     }
   });
 }
 
+// Remove item from local storage.
 function removeItemFromLocalStorage(id, color) {
   const cart = getCart();
   const filteredCart = cart.filter(
@@ -110,17 +119,10 @@ function removeItemFromLocalStorage(id, color) {
   // TODO update total quantities on page using updated information from cards
   // TODO update total price on page using updated information from fetch product function
 }
-// TODO create function UpdateTotals to update total quantities and total price on page using updated information from cards
-// TODO update total quantities on page using updated information from cards
-// TODO update total price on page using updated information from fetch product function
-
-// TODO update total quantities on page using updated information from cards
-// TODO update total price on page using updated information from fetch product function
 
 insertCartProducts();
 
-// TODO add event listeners to form inputs
-
+// Validates an input form
 function validate() {
   const firstName = document.getElementById("firstName").value;
   const lastName = document.getElementById("lastName").value;
@@ -165,6 +167,7 @@ function validate() {
   console.log("validated");
 }
 
+// Create a new order
 function postrequest() {
   const contact = {
     firstName: document.getElementById("firstName").value,
@@ -216,13 +219,9 @@ function postrequest() {
   // console.log("post", products);
 }
 
-// TODO add event listeners to submit button
+// Adds a click event listener to the order element
 const submitButton = document.getElementById("order");
 submitButton.addEventListener("click", (e) => {
   e.preventDefault();
   validate();
 });
-/**
- * TODO fetch API post request once the data is validated
- * TODO redirect click on submit button to confirmation page
- */
