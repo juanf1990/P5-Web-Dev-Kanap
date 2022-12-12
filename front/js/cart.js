@@ -15,6 +15,7 @@ function getCart() {
 
 // Display DATA on HTML
 
+const submitButton = document.getElementById("order");
 const productsContainer = document.getElementById("cart__items");
 const totalPrice = document.getElementById("totalPrice");
 
@@ -220,7 +221,6 @@ function postrequest() {
 }
 
 // Adds a click event listener to the order element
-const submitButton = document.getElementById("order");
 submitButton.addEventListener("click", (e) => {
   e.preventDefault();
   validate();
