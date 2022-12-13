@@ -6,7 +6,6 @@ async function fetchProducts() {
 }
 
 // Get cart from localStorage
-
 function getCart() {
   const cart = JSON.parse(localStorage.getItem("cart"));
   console.log(cart);
@@ -14,13 +13,11 @@ function getCart() {
 }
 
 // Display DATA on HTML
-
 const submitButton = document.getElementById("order");
 const productsContainer = document.getElementById("cart__items");
 const totalPrice = document.getElementById("totalPrice");
 
 // Handle clicks on delete button
-
 async function insertCartProducts() {
   await fetchProducts().then((products) => {
     const cart = getCart();
