@@ -1,5 +1,3 @@
-console.log("I'm a loaded script, ready to serve you!");
-
 // Fetch data from API
 
 fetch("http://localhost:3000/api/products")
@@ -9,7 +7,6 @@ fetch("http://localhost:3000/api/products")
   .then((products) => {
     insertProducts(products);
   });
-
 
 // Get element on HTML where to insert the cards
 

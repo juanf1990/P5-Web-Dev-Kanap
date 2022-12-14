@@ -114,8 +114,6 @@ function removeItemFromLocalStorage(id, color) {
   );
   const stringifiedCart = JSON.stringify(filteredCart);
   localStorage.setItem("cart", stringifiedCart);
-  // TODO update total quantities on page using updated information from cards
-  // TODO update total price on page using updated information from fetch product function
 }
 
 insertCartProducts();
@@ -128,7 +126,7 @@ function validate() {
   const city = document.getElementById("city").value;
   const email = document.getElementById("email").value;
   const nameRegEx = /^[a-zA-Z ]{2,30}$/;
-  const addressRegEx = /^[a-zA-Z0-9]*$/;
+  const addressRegEx = /^[a-zA-Z0-9]{1}$/;
   const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const nameResult = nameRegEx.test(firstName);
   const lastNameResult = nameRegEx.test(lastName);
@@ -207,14 +205,6 @@ function postrequest() {
   } catch (error) {
     console.log(error);
   }
-
-  // const products = [];
-  // const cart = getCart();
-  // cart.forEach((item) => {
-  //   products.push(contact, item.id);
-  // });
-
-  // console.log("post", products);
 }
 
 // Adds a click event listener to the order element
