@@ -27,7 +27,7 @@ const quantity = document.getElementById("quantity");
  */
 
 async function displayCartProducts() {
-  const url = `http://localhost:3000/api/products/${productID}`;
+  const url = `https://p5-web-dev-kanap-production.up.railway.app/api/products/${productID}`;
   const response = await fetch(url);
   const product = await response.json();
   console.log(product);
