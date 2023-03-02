@@ -1,6 +1,6 @@
 // Fetch data from API
 
-fetch("http://localhost:3000/api/products")
+fetch("https://p5-web-dev-kanap-production.up.railway.app/api/products")
   .then((data) => {
     return data.json();
   })
