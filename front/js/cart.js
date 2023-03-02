@@ -1,6 +1,6 @@
 // fetch DATA from API
 async function fetchProducts() {
-  const response = await fetch("http://localhost:3000/api/products");
+  const response = await fetch("https://p5-web-dev-kanap-production.up.railway.app/api/products");
   const products = await response.json();
   return products;
 }
@@ -184,7 +184,7 @@ function postrequest() {
 
   try {
     fetch(
-      "http://localhost:3000/api/products/order",
+      "https://p5-web-dev-kanap-production.up.railway.app/api/products/order",
       {
         method: "POST",
         headers: {
