@@ -130,7 +130,7 @@ function validate() {
   const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const nameResult = nameRegEx.test(firstName);
   const lastNameResult = nameRegEx.test(lastName);
-  const addressResult = addressRegEx.test(address);
+  const addressResult = nameRegEx.test(address);
   const cityResult = addressRegEx.test(city);
   const emailResult = emailRegEx.test(email);
   const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
@@ -146,14 +146,14 @@ function validate() {
     lastNameErrorMsg.innerText = "Please enter a valid last name";
     return;
   }
-  if (addressResult === false) {
-    addressErrorMsg.innerText = "Please enter a valid address";
-    return;
-  }
-  if (cityResult === false) {
-    cityErrorMsg.innerText = "Please enter a valid city";
-    return;
-  }
+  // if (addressResult === false) {
+  //   addressErrorMsg.innerText = "Please enter a valid address";
+  //   return;
+  // }
+  // if (cityResult === false) {
+  //   cityErrorMsg.innerText = "Please enter a valid city";
+  //   return;
+  // }
   if (emailResult === false) {
     emailErrorMsg.innerText = "Please enter a valid email";
     return;

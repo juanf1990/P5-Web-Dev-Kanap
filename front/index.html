@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Confirmation</title>
+    <title>Kanap</title>
 
     <meta charset="utf-8" />
     <meta name="description" content="Amazing e-commerce website" />
@@ -12,8 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link href="../css/style.css" rel="stylesheet" />
-    <link href="../css/confirmation.css" rel="stylesheet" />
+    <link href="./css/style.css" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
@@ -25,21 +24,21 @@
           <ul>
             <li>
               <img
-                src="../images/icons/phone.svg"
+                src="./images/icons/phone.svg"
                 alt="phone icon"
                 class="informations__phone"
               />01 23 45 67 89
             </li>
             <li>
               <img
-                src="../images/icons/mail.svg"
+                src="./images/icons/mail.svg"
                 alt="mail icon"
                 class="informations__mail"
               />support@name.com
             </li>
             <li>
               <img
-                src="../images/icons/adress.svg"
+                src="./images/icons/adress.svg"
                 alt="geolocation icon"
                 class="informations__address"
               />01 23 45 67 89
@@ -52,7 +51,7 @@
           <a href="./index.html">
             <img
               class="logo"
-              src="../images/logo.png"
+              src="./images/logo.png"
               alt="Kanap company logo"
             />
           </a>
@@ -64,17 +63,31 @@
           </nav>
         </div>
       </div>
-      <img class="banner" src="../images/banner.png" alt="Banner" />
+      <img class="banner" src="./images/banner.png" alt="Banner" />
     </header>
 
     <main class="limitedWidthBlockContainer">
-      <div class="limitedWidthBlock" id="limitedWidthBlock">
-        <div class="confirmation">
-          <p>
-            Order confirmed! <br />Your order number is:
-            <span id="orderId"></span>
-          </p>
+      <div class="limitedWidthBlock" id="container">
+        <div class="titles">
+          <h1>Our products</h1>
+          <h2>Quality sofas for you home</h2>
         </div>
+        <section class="items" id="items">
+          <!-- <a href="./product.html?id=42">
+            <article>
+              <img
+                class="productImage"
+                src="/back/images/kanap01.jpeg"
+                alt="Lorem ipsum dolor sit amet, Kanap name1"
+              />
+              <h3 class="productName">Kanap name1</h3>
+              <p class="productDescription">
+                Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis
+                enim malesuada risus sapien gravida nulla nisl arcu.
+              </p>
+            </article>
+          </a> -->
+        </section>
       </div>
     </main>
 
@@ -84,7 +97,7 @@
           <div>
             <img
               class="logo"
-              src="../images/logo.png"
+              src="./images/logo.png"
               alt="Kanap company logo"
             />
           </div>
@@ -103,11 +116,11 @@
         <div class="limitedWidthBlock">
           <p>
             © Copyright 2021 - 2042 | Openclassrooms by Openclassrooms | All
-            Rights Reserved | Powered by <3
+            Rights Reserved | Powered by Juan
           </p>
         </div>
       </div>
     </footer>
-    <script src="../js/confirmation.js"></script>
+    <script defer src="./js/script.js"></script>
   </body>
 </html>
