@@ -60,12 +60,12 @@ async function insertCartProducts() {
             0
           );
           const currentTotalPrice = parsedCart.reduce(
-            (acc, item) => acc + item.quantity * product.price,
+            (acc, item) => acc + item.quantity * item.price, // Use item.price instead of product.price
             0
           );
           totalQuantity.innerText = currentTotalQuantity;
-          totalPrice.innerText = currentTotalPrice;
-        }
+          totalPrice.innerText = currentTotalPrice.toFixed(2); // Display total price with two decimal places
+        }       
 
         articleElement
           .querySelector(".deleteItem")
